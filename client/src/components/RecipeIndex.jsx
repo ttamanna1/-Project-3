@@ -20,12 +20,14 @@ export default function Recipes() {
   //! Functions
   function handleChange(e){
     if (e.target.name === 'rating') {
+      // console.log('Rating dropdown changed')
       setSelectedRating(e.target.value)
     } else {
       const newObj = {
         ...filters,
         [e.target.name]: e.target.value
       }
+      // console.log('Other dropdown or input changed:', newObj)
       setFilters(newObj)
     }  
   }
@@ -35,10 +37,12 @@ export default function Recipes() {
 
     const pattern = new RegExp(filters.search, 'i')
     const filteredArray = recipe.filter(rec => {
+      // console.log('avg', typeof rec.avgRating, rec.avgRating)
+      // console.log('sl', typeof selectedRating, selectedRating)
       return pattern.test(rec.title) && (rec.category === filters.category || filters.category === 'All') &&
-      (selectedRating === 'All' || parseFloat(rec.avgRating) === parseFloat(selectedRating))
-      
+      (selectedRating === 'All' || Math.round(parseFloat(rec.avgRating)) === Math.round(parseFloat(selectedRating)))
     })
+    console.log('Filtered Array:', filteredArray)
     setFilteredCategories(filteredArray)
 
     if (recipe.length > 0 && categories.length === 0) {
@@ -56,8 +60,8 @@ export default function Recipes() {
             <select id="dropdown" name="category" value={filters.category} onChange={handleChange}>
               <option value="All" default>Continents</option>
               { categories.length > 0 &&
-                categories.map(category => {
-                  return <option key={category} value={category}>{category}</option>
+                categories.map((category, index)=> {
+                  return <option key={index} value={category}>{category}</option>
                 })
               }
             </select>
