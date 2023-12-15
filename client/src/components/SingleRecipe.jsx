@@ -20,7 +20,7 @@ export default function SingleRecipe() {
   }, []);
 
   const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value })
   };
 
   const handleSubmitReview = async (e) => {
@@ -31,16 +31,17 @@ export default function SingleRecipe() {
           Authorization: `Bearer ${getToken()}`,
         },
       });
-      console.log('Review created:', response.data);
-      setFormData({ rating: 5, text: '' });
+      console.log('Review created:', response.data)
+      setFormData({ rating: 5, text: '' })
       // Fetch updated recipe data after creating the review
-      const updatedRecipe = await axios.get(`/api/recipes/${recipe._id}`);
+      const updatedRecipe = await axios.get(`/api/recipes/${recipe._id}`)
       // Update the component state with the latest recipe data
-      updatedRecipe && setRecipe(updatedRecipe.data);
+      updatedRecipe && setRecipe(updatedRecipe.data)
+      console.log('Updated Recipe:', updatedRecipe.data)
     } catch (error) {
-      console.error('Error creating review:', error);
+      console.error('Error creating review:', error)
     }
-  };
+  }
 
 
 
@@ -53,14 +54,15 @@ export default function SingleRecipe() {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
-      });
+      })
   
       console.log('Review deleted:', response.data)
   
       // Fetch updated recipe data after deleting the review
       const updatedRecipe = await axios.get(`/api/recipes/${recipe._id}`)
       // Update the component state with the latest recipe data
-      setRecipe(updatedRecipe.data);
+      setRecipe(updatedRecipe.data)
+      console.log('Updated Recipe:', updatedRecipe.data)
     } catch (error) {
       console.error('Error deleting review:', error)
   
@@ -77,7 +79,6 @@ export default function SingleRecipe() {
       <div>
         <h2>{recipe.title}</h2>
       </div>
-
       <div className='img-ing'>
         <img className="single-img" src={recipe.poster} alt={`Image of ${recipe.title}`} />
         <div className="ing-div">

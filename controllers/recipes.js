@@ -145,6 +145,11 @@ export const createReview = async (req, res) => {
 
     recipe.reviews.push(review)
 
+    //Recalculate avgRating
+    recipe.avgRating = (
+      recipe.reviews.reduce((acc, review) => acc + review.rating, 0) / recipe.reviews.length
+    ).toFixed(2)
+
     await recipe.save()
 
     // Now, recipe.reviews will contain both _id and username in the owner object
@@ -164,17 +169,25 @@ export const createReview = async (req, res) => {
 export const deleteReview = async (req, res) => {
   try {
     const { recipeId, reviewId } = req.params
-    
     const recipe = await Recipe.findById(recipeId)
+
     if (!recipe) return res.status(400).json({ message: 'Recipe not found' })
+
     const reviewToDelete = recipe.reviews.id(reviewId)
     
     if (!reviewToDelete) return res.status(404).json({ message: 'Review not found' })
+
     if (!reviewToDelete.owner.equals(req.currentUser._id)) {
       return res.status(401).json({ message: 'Unauthorized' })
     }
 
     reviewToDelete.deleteOne()
+
+    // Recalculate avgRating
+    recipe.avgRating = (
+      recipe.reviews.reduce((acc, review) => acc + review.rating, 0) / recipe.reviews.length
+    ).toFixed(2)
+
     await recipe.save()
 
     return res.sendStatus(204)
