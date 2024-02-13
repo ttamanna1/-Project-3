@@ -35,8 +35,8 @@ export default function ImageUploadField({ formData, setFormData }) {
         </>
         :
         <>
-        <input type="file"  id="fileInput" name="poster" onChange={handleImageUpload} />
-        <label htmlFor="fileInput" className="custom-file-upload">Select a file</label>
+          <input type="file"  id="fileInput" name="poster" onChange={handleImageUpload} />
+          <label htmlFor="fileInput" className="custom-file-upload">Select a file</label>
         </>
       }
     </>
